@@ -2,13 +2,24 @@ import copy
 
 class DFA:
     def __init__(self, Q, Sigma, delta, q0, F):
+        """
+        Q: Set of states.
+        Sigma: Alphabet.
+        delta: Transition function (dictionary).
+        q0: Initial state.
+        F: Set of final states.
+        """
         self.Q = Q
         self.Sigma = Sigma
         self.delta = delta 
         self.q0 = q0    
         self.F = F
 
-    def run(self, word):
+    def run(self, word):        
+        """
+        Simulates the DFA on the input word.
+        Returns True if word is accepted, otherwise False.
+        """
         q = self.q0
         while word != "":
             q = self.delta[(q, word[0])]
@@ -16,6 +27,10 @@ class DFA:
         return q in self.F
     
     def minimize(self):
+        """
+        Minimizes the DFA using the table filling algorithm.
+        Returns a new minimized DFA.
+        """
         states = list(self.Q)
         distinct_table = {}
         state_pairs = set()
