@@ -32,13 +32,9 @@ class DFA:
 
         # initialize distinguishability table
         for state_pair in state_pairs:
-            if state_pair[0] in self.F and state_pair[1] not in self.F or\
-                state_pair[0] not in self.F and state_pair[1] in self.F:
-                
+            if (state_pair[0] in self.F) != (state_pair[1] in self.F):
                 distinct_table[state_pair] = True
-            
             else:
-                
                 distinct_table[state_pair] = False
 
         # Loop through unmarked pairs in table until a marking can no longer be made 
@@ -93,7 +89,7 @@ class DFA:
                     new_F.remove(state)
                     new_F.append(indistinct_state_pair)
         
-        new_q = set(new_q)
+        new_Q = set(new_Q)
         new_F = set(new_F)
 
         return DFA(new_q, self.Sigma, new_delta, new_q0, new_F)        
