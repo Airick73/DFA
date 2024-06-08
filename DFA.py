@@ -16,8 +16,6 @@ class DFA:
         return q in self.F
     
     def minimize(self):
-        final_states = list(self.F)
-        non_final_states = [state for state in self.Q if state not in self.F]
         states = list(self.Q)
         distinct_table = {}
         state_pairs = set()
@@ -25,13 +23,14 @@ class DFA:
         # create unique state pairs 
         for i in range(len(self.Q)):
             for j in range(i + 1, len(self.Q)):
-                P = states[i]
-                Q = states[j]
-                state_pairs.add((P,Q))
+                state_one = states[i]
+                state_two = states[j]
+                state_pairs.add((state_one, state_two))
 
         # number of unqiue states should be == n (n - 1) / 2
         assert( len(state_pairs) == (len(states) * (len(states) - 1) / 2) )
 
+        # initialize distinguishability table
         for state_pair in state_pairs:
             if state_pair[0] in self.F and state_pair[1] not in self.F or\
                 state_pair[0] not in self.F and state_pair[1] in self.F:
@@ -42,6 +41,7 @@ class DFA:
                 
                 distinct_table[state_pair] = False
 
+        # Loop through unmarked pairs in table until a marking can no longer be made 
         while True:
             marking_occured = False
             
@@ -50,7 +50,7 @@ class DFA:
                     state_one = self.delta[(state_pair[0], input_symbol)]
                     state_two = self.delta[(state_pair[1], input_symbol)]
                     
-                    # checking pair in acsending order 
+                    # checking pair in acsending order to avoid key error
                     if state_one < state_two:
                         check_pair = (state_one, state_two)
                     else:
@@ -65,24 +65,39 @@ class DFA:
                 
         indistinct_state_pairs = [state_pair for state_pair, is_distinct in distinct_table.items() if is_distinct == False]
 
-        # given a set {0,1,2,3} 
-        # given a list of tuples [(0,3), (1,2)]
-        # make a set out of the states which appear in the tuple 
-
-        # Make a mapping of old states to new states 
-        new_delta = copy.copy(self.delta)
-        for state_action_pair in new_delta:
+        # Create new delta with merged states from indistinguisable states
+        new_delta = {}
+        
+        for (state, action), next_state in self.delta.items():
             for indistinct_state_pair in indistinct_state_pairs:
-                if new_delta[state_action_pair] in indistinct_state_pair:
-                     new_delta[state_action_pair] = indistinct_state_pair
+                if state in indistinct_state_pair:
+                    state = indistinct_state_pair
+                if next_state in indistinct_state_pair:
+                    next_state = indistinct_state_pair
+            new_delta[(state, action)] = next_state 
 
+        new_q = list(self.Q)
+        new_q0 = 0
+        new_F = list(self.F)
+        for state in list(self.Q):
+            for indistinct_state_pair in indistinct_state_pairs:
+                if state in indistinct_state_pair:
+                    new_q.remove(state)
+                    new_q.append(indistinct_state_pair)
+                if new_q0 in indistinct_state_pair:
+                    new_q0 = indistinct_state_pair
+
+        for state in list(self.F):
+            for indistinct_state_pair in indistinct_state_pairs:
+                if state in indistinct_state_pair:
+                    new_F.remove(state)
+                    new_F.append(indistinct_state_pair)
         
+        new_q = set(new_q)
+        new_F = set(new_F)
 
+        return DFA(new_q, self.Sigma, new_delta, new_q0, new_F)        
 
-        # return minimal DFA
-        pass
-        
-    
 Q = {0,1,2,3}
 Sigma = {"a","b"}
 delta = {
