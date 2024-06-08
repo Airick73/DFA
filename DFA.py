@@ -1,5 +1,3 @@
-import copy 
-
 class DFA:
     def __init__(self, Q, Sigma, delta, q0, F):
         """
