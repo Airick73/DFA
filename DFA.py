@@ -97,20 +97,3 @@ class DFA:
         new_F = set(new_F)
 
         return DFA(new_q, self.Sigma, new_delta, new_q0, new_F)        
-
-Q = {0,1,2,3}
-Sigma = {"a","b"}
-delta = {
-    (0, "a") : 1,
-    (0, "b") : 2,
-    (1, "a") : 0,
-    (1, "b") : 3, 
-    (2, "a") : 3,
-    (2, "b") : 0,
-    (3, "a") : 2,
-    (3, "b") : 1
-}
-q0 = 0
-F = {0,3}
-Odd_or_Even_DFA = DFA(Q, Sigma, delta, q0, F)
-Odd_or_Even_DFA.minimize()
