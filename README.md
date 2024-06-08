@@ -1,4 +1,4 @@
-# DFA Minimization Repository
+# DFA Library 
 
 This repository provides a Python implementation of a Deterministic Finite Automaton (DFA) and includes functionality to minimize the DFA using the table filling algorithm. Additionally, it includes a test suite to validate the correctness of the DFA operations.
 
