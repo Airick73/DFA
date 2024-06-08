@@ -46,11 +46,7 @@ class DFA:
                     state_one = self.delta[(state_pair[0], input_symbol)]
                     state_two = self.delta[(state_pair[1], input_symbol)]
                     
-                    # checking pair in acsending order to avoid key error
-                    if state_one < state_two:
-                        check_pair = (state_one, state_two)
-                    else:
-                        check_pair = (state_two, state_one)
+                    check_pair = tuple(sorted(state_two, state_one))
 
                     if distinct_table[check_pair] and distinct_table[state_pair] == False:
                         distinct_table[state_pair] = True
