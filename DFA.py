@@ -46,9 +46,9 @@ class DFA:
                     state_one = self.delta[(state_pair[0], input_symbol)]
                     state_two = self.delta[(state_pair[1], input_symbol)]
                     
-                    check_pair = tuple(sorted(state_two, state_one))
-
-                    if distinct_table[check_pair] and distinct_table[state_pair] == False:
+                    check_pair = tuple(sorted((state_one, state_two)))
+                    
+                    if distinct_table.get(check_pair, False) and distinct_table[state_pair] == False:
                         distinct_table[state_pair] = True
                         marking_occured = True
                     
@@ -68,14 +68,14 @@ class DFA:
                     next_state = indistinct_state_pair
             new_delta[(state, action)] = next_state 
 
-        new_q = list(self.Q)
+        new_Q = list(self.Q)
         new_q0 = 0
         new_F = list(self.F)
         for state in list(self.Q):
             for indistinct_state_pair in indistinct_state_pairs:
                 if state in indistinct_state_pair:
-                    new_q.remove(state)
-                    new_q.append(indistinct_state_pair)
+                    new_Q.remove(state)
+                    new_Q.append(indistinct_state_pair)
                 if new_q0 in indistinct_state_pair:
                     new_q0 = indistinct_state_pair
 
@@ -88,4 +88,4 @@ class DFA:
         new_Q = set(new_Q)
         new_F = set(new_F)
 
-        return DFA(new_q, self.Sigma, new_delta, new_q0, new_F)        
+        return DFA(new_Q, self.Sigma, new_delta, new_q0, new_F)        
