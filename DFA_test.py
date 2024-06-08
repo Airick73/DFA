@@ -88,7 +88,7 @@ class TestDFA(unittest.TestCase):
     def test_minimize_Odd_or_Even_DFA(self):
         minimized_odd_or_even_DFA = self.Odd_or_Even_DFA.minimize()
         self.assertEqual(len(minimized_odd_or_even_DFA.Q), 2)
-        self.assertEqual(minimized_odd_or_even_DFA.F, {0,1})
+        self.assertEqual(len(minimized_odd_or_even_DFA.F), 1)
 
 if __name__ == '__main__':
     unittest.main()
