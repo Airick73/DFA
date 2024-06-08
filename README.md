@@ -82,6 +82,10 @@ python -m unittest test_DFA.py
 - Invalid sequences for different DFAs.
 - Testing the minimization process.
 
+### References 
+[1] Simplified DFA Minimization - Computerphile, YouTube, uploaded by Computerphile, 9 May 2017, [Simplified DFA Minimization - Computerphile](https://www.youtube.com/watch?v=oHVHkkah3MY&list=PLzH6n4zXuckpc5x08oRM4AI02g5KwFQov&index=2&pp=iAQB)
+
+
 
 
 
